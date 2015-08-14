@@ -20,6 +20,7 @@ package com.uwetrottmann.tmdb.services;
 import com.uwetrottmann.tmdb.entities.Configuration;
 
 import retrofit.http.GET;
+import rx.Observable;
 
 public interface ConfigurationService {
 
@@ -34,6 +35,6 @@ public interface ConfigurationService {
      * >http://cf2.imgobject.com/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg</a>
      */
     @GET("/configuration")
-    Configuration configuration();
+    Observable<Configuration> configuration();
 
 }

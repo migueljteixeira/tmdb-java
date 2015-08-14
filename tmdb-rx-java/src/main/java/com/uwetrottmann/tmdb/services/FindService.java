@@ -5,6 +5,7 @@ import com.uwetrottmann.tmdb.enumerations.ExternalSource;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface FindService {
 
@@ -20,7 +21,7 @@ public interface FindService {
      * @return
      */
     @GET("/find/{id}")
-    FindResults find(
+    Observable<FindResults> find(
             @Path("id") String externalId,
             @Query("external_source") ExternalSource source,
             @Query("language") String language

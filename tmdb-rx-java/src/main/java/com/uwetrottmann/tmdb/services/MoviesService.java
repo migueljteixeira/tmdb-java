@@ -32,6 +32,7 @@ import com.uwetrottmann.tmdb.entities.Translations;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface MoviesService {
 
@@ -43,7 +44,7 @@ public interface MoviesService {
      * @param appendToResponse <em>Optional.</em> extra requests to append to the result.
      */
     @GET("/movie/{id}")
-    Movie summary(
+    Observable<Movie> summary(
             @Path("id") int tmdbId,
             @Query("language") String language,
             @Query("append_to_response") AppendToResponse appendToResponse
@@ -56,7 +57,7 @@ public interface MoviesService {
      * @param country <em>Optional.</em> ISO 3166-1 code.
      */
     @GET("/movie/{id}/alternative_titles")
-    MovieAlternativeTitles alternativeTitles(
+    Observable<MovieAlternativeTitles> alternativeTitles(
             @Path("id") int tmdbId,
             @Query("country") String country
     );
@@ -67,7 +68,7 @@ public interface MoviesService {
      * @param tmdbId TMDb id.
      */
     @GET("/movie/{id}/credits")
-    Credits credits(
+    Observable<Credits> credits(
             @Path("id") int tmdbId
     );
 
@@ -78,7 +79,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/{id}/images")
-    Images images(
+    Observable<Images> images(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -89,7 +90,7 @@ public interface MoviesService {
      * @param tmdbId TMDb id.
      */
     @GET("/movie/{id}/keywords")
-    MovieKeywords keywords(
+    Observable<MovieKeywords> keywords(
             @Path("id") int tmdbId
     );
 
@@ -99,7 +100,7 @@ public interface MoviesService {
      * @param tmdbId TMDb id.
      */
     @GET("/movie/{id}/releases")
-    Releases releases(
+    Observable<Releases> releases(
             @Path("id") int tmdbId
     );
 
@@ -110,7 +111,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/{id}/videos")
-    Videos videos(
+    Observable<Videos> videos(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -123,7 +124,7 @@ public interface MoviesService {
      * @return
      */
     @GET("/movie/{id}/translations")
-    Translations translations(
+    Observable<Translations> translations(
             @Path("id") int tmdbId,
             @Query("append_to_response") AppendToResponse appendToResponse
     );
@@ -136,7 +137,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/{id}/similar")
-    MovieResultsPage similar(
+    Observable<MovieResultsPage> similar(
             @Path("id") int tmdbId,
             @Query("page") Integer page,
             @Query("language") String language
@@ -150,7 +151,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/{id}/reviews")
-    ReviewResultsPage reviews(
+    Observable<ReviewResultsPage> reviews(
             @Path("id") int tmdbId,
             @Query("page") Integer page,
             @Query("language") String language
@@ -164,7 +165,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/{id}/lists")
-    ListResultsPage lists(
+    Observable<ListResultsPage> lists(
             @Path("id") int tmdbId,
             @Query("page") Integer page,
             @Query("language") String language
@@ -174,7 +175,7 @@ public interface MoviesService {
      * Get the latest movie id.
      */
     @GET("/movie/latest")
-    Movie latest();
+    Observable<Movie> latest();
 
     /**
      * Get the list of upcoming movies. This list refreshes every day. The maximum number of items this list will
@@ -184,7 +185,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/upcoming")
-    MovieResultsPage upcoming(
+    Observable<MovieResultsPage> upcoming(
             @Query("page") Integer page,
             @Query("language") String language
     );
@@ -197,7 +198,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/now_playing")
-    MovieResultsPage nowPlaying(
+    Observable<MovieResultsPage> nowPlaying(
             @Query("page") Integer page,
             @Query("language") String language
     );
@@ -209,7 +210,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/popular")
-    MovieResultsPage popular(
+    Observable<MovieResultsPage> popular(
             @Query("page") Integer page,
             @Query("language") String language
     );
@@ -222,7 +223,7 @@ public interface MoviesService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/movie/top_rated")
-    MovieResultsPage topRated(
+    Observable<MovieResultsPage> topRated(
             @Query("page") Integer page,
             @Query("language") String language
     );

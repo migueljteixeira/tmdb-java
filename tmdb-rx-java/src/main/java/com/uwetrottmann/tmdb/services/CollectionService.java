@@ -21,6 +21,7 @@ import com.uwetrottmann.tmdb.entities.Images;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface CollectionService {
     /**
@@ -31,7 +32,7 @@ public interface CollectionService {
      * @param appendToResponse <em>Optional.</em> extra requests to append to the result.
      */
     @GET("/collection/{id}")
-    Collection summary(@Path("id") int tmdbId, @Query("language") String language, @Query("append_to_response") AppendToResponse appendToResponse);
+    Observable<Collection> summary(@Path("id") int tmdbId, @Query("language") String language, @Query("append_to_response") AppendToResponse appendToResponse);
 
     /**
      * Get the images (posters and backdrops) for a specific collection id.
@@ -40,5 +41,5 @@ public interface CollectionService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/collection/{id}/images")
-    Images images(@Path("id") int tmdbId, @Query("language") String language);
+    Observable<Images> images(@Path("id") int tmdbId, @Query("language") String language);
 }

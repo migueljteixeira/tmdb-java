@@ -10,9 +10,13 @@ import com.uwetrottmann.tmdb.entities.Media;
 import com.uwetrottmann.tmdb.entities.MovieResultsPage;
 import com.uwetrottmann.tmdb.entities.PersonResultsPage;
 import com.uwetrottmann.tmdb.entities.TvResultsPage;
+
 import org.junit.Test;
 
 import java.text.ParseException;
+
+import rx.Observable;
+import rx.functions.Action1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,81 +24,110 @@ public class SearchServiceTest extends BaseTestCase {
 
     @Test
     public void test_companySearch() throws ParseException {
-        CompanyResultsPage companyResults = getManager().searchService().company("Sony Pictures", null);
-        
-        assertResultsPage(companyResults);
-        assertThat(companyResults.results).isNotEmpty();
-        assertThat(companyResults.results.get(0).id).isNotNull();
-        assertThat(companyResults.results.get(0)).isNotNull();
-        assertThat(companyResults.results.get(0).logo_path).isNotNull();
+        Observable<CompanyResultsPage> results = getManager().searchService().company("Sony Pictures", null);
+
+        results.toBlocking().forEach(new Action1<CompanyResultsPage>() {
+            @Override
+            public void call(CompanyResultsPage results) {
+                assertResultsPage(results);
+                assertThat(results.results).isNotEmpty();
+                assertThat(results.results.get(0).id).isNotNull();
+                assertThat(results.results.get(0)).isNotNull();
+                assertThat(results.results.get(0).logo_path).isNotNull();
+            }
+        });
     }
-    
+
     @Test
     public void test_collectionSearch() throws ParseException {
-        CollectionResultsPage collectionResults = getManager().searchService().collection("The Avengers Collection",
-                null, null);
-        
-        assertResultsPage(collectionResults);
-        assertThat(collectionResults.results).isNotEmpty();
-        assertThat(collectionResults.results.get(0).id).isNotNull();
-        assertThat(collectionResults.results.get(0).backdrop_path).isNotNull();
-        assertThat(collectionResults.results.get(0).name).isNotNull();
-        assertThat(collectionResults.results.get(0).poster_path).isNotNull();
+        Observable<CollectionResultsPage> results = getManager().searchService()
+                .collection("The Avengers Collection", null, null);
+
+        results.toBlocking().forEach(new Action1<CollectionResultsPage>() {
+            @Override
+            public void call(CollectionResultsPage results) {
+                assertResultsPage(results);
+                assertThat(results.results).isNotEmpty();
+                assertThat(results.results.get(0).id).isNotNull();
+                assertThat(results.results.get(0).backdrop_path).isNotNull();
+                assertThat(results.results.get(0).name).isNotNull();
+                assertThat(results.results.get(0).poster_path).isNotNull();
+            }
+        });
     }
-    
+
     @Test
     public void test_keywordSearch() throws ParseException {
-        KeywordResultsPage keywordResults = getManager().searchService().keyword("fight", null);
-        
-        assertResultsPage(keywordResults);
-        assertThat(keywordResults.results).isNotEmpty();
-        assertThat(keywordResults.results.get(0).id).isNotNull();
-        assertThat(keywordResults.results.get(0).name).isNotNull();
+        Observable<KeywordResultsPage> results = getManager().searchService().keyword("fight", null);
+
+        results.toBlocking().forEach(new Action1<KeywordResultsPage>() {
+            @Override
+            public void call(KeywordResultsPage results) {
+                assertResultsPage(results);
+                assertThat(results.results).isNotEmpty();
+                assertThat(results.results.get(0).id).isNotNull();
+                assertThat(results.results.get(0).name).isNotNull();
+            }
+        });
     }
-    
+
     @Test
     public void test_movieSearch() throws ParseException {
-        MovieResultsPage movieResults = getManager().searchService().movie(TestData.MOVIE_TITLE, null, null,
-                null, null, null, null);
-        
-        assertResultsPage(movieResults);
-        assertThat(movieResults.results).isNotEmpty();
+        Observable<MovieResultsPage> results = getManager().searchService()
+                .movie(TestData.MOVIE_TITLE, null, null, null, null, null, null);
+
+        results.toBlocking().forEach(new Action1<MovieResultsPage>() {
+            @Override
+            public void call(MovieResultsPage results) {
+                assertResultsPage(results);
+                assertThat(results.results).isNotEmpty();
+            }
+        });
     }
-    
+
     @Test
     public void test_personSearch() throws ParseException {
-        PersonResultsPage movieResults = getManager().searchService().person(TestData.PERSON_NAME, null, null, null);
-        
-        assertResultsPage(movieResults);
-        assertThat(movieResults.results.get(0).id).isNotNull();
-        assertThat(movieResults.results.get(0).name).isNotNull();
-        assertThat(movieResults.results.get(0).popularity).isNotNull();
-        assertThat(movieResults.results.get(0).profile_path).isNotNull();
-        assertThat(movieResults.results.get(0).adult).isNotNull();
-        
-        for (Media media : movieResults.results.get(0).known_for) {
-            assertThat(media.adult).isNotNull();
-            assertThat(media.backdrop_path).isNotNull();
-            assertThat(media.id).isNotNull();
-            assertThat(media.original_title).isNotNull();
-            assertThat(media.release_date).isNotNull();
-            assertThat(media.poster_path).isNotNull();
-            assertThat(media.popularity).isNotNull().isGreaterThan(0);
-            assertThat(media.title).isNotNull();
-            assertThat(media.vote_average).isNotNull().isGreaterThan(0);
-            assertThat(media.vote_count).isNotNull().isGreaterThan(0);
-            assertThat(media.media_type).isNotNull();
-        }
-        
+        Observable<PersonResultsPage> results = getManager().searchService().person(TestData.PERSON_NAME, null, null, null);
+
+        results.toBlocking().forEach(new Action1<PersonResultsPage>() {
+            @Override
+            public void call(PersonResultsPage results) {
+                assertResultsPage(results);
+                assertThat(results.results.get(0).id).isNotNull();
+                assertThat(results.results.get(0).name).isNotNull();
+                assertThat(results.results.get(0).popularity).isNotNull();
+                assertThat(results.results.get(0).profile_path).isNotNull();
+                assertThat(results.results.get(0).adult).isNotNull();
+
+                for (Media media : results.results.get(0).known_for) {
+                    assertThat(media.adult).isNotNull();
+                    assertThat(media.backdrop_path).isNotNull();
+                    assertThat(media.id).isNotNull();
+                    assertThat(media.original_title).isNotNull();
+                    assertThat(media.release_date).isNotNull();
+                    assertThat(media.poster_path).isNotNull();
+                    assertThat(media.popularity).isNotNull().isGreaterThan(0);
+                    assertThat(media.title).isNotNull();
+                    assertThat(media.vote_average).isNotNull().isGreaterThan(0);
+                    assertThat(media.vote_count).isNotNull().isGreaterThan(0);
+                    assertThat(media.media_type).isNotNull();
+                }
+            }
+        });
     }
 
     @Test
     public void test_tv() {
-        TvResultsPage tvResults = getManager().searchService().tv(TestData.TVSHOW_TITLE, null, null, null, null);
-        
-        assertResultsPage(tvResults);        
-        assertThat(tvResults.results).isNotEmpty();
-        assertThat(tvResults.results.get(0).name).isEqualTo(TestData.TVSHOW_TITLE);
+        Observable<TvResultsPage> results = getManager().searchService().tv(TestData.TVSHOW_TITLE, null, null, null, null);
+
+        results.toBlocking().forEach(new Action1<TvResultsPage>() {
+            @Override
+            public void call(TvResultsPage results) {
+                assertResultsPage(results);
+                assertThat(results.results).isNotEmpty();
+                assertThat(results.results.get(0).name).isEqualTo(TestData.TVSHOW_TITLE);
+            }
+        });
     }
 
     private void assertResultsPage(BaseResultsPage results) {

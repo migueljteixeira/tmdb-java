@@ -26,6 +26,7 @@ import com.uwetrottmann.tmdb.entities.Videos;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface TvEpisodesService {
 
@@ -37,7 +38,7 @@ public interface TvEpisodesService {
      * @param appendToResponse <em>Optional.</em> extra requests to append to the result.
      */
     @GET("/tv/{id}/season/{season_number}/episode/{episode_number}")
-    TvEpisode episode(
+    Observable<TvEpisode> episode(
             @Path("id") int showId,
             @Path("season_number") int seasonNumber,
             @Path("episode_number") int episodeNumber,
@@ -51,7 +52,7 @@ public interface TvEpisodesService {
      * @param showId A themoviedb id.
      */
     @GET("/tv/{id}/season/{season_number}/episode/{episode_number}/credits")
-    Credits credits(
+    Observable<Credits> credits(
             @Path("id") int showId,
             @Path("season_number") int seasonNumber,
             @Path("episode_number") int episodeNumber
@@ -63,7 +64,7 @@ public interface TvEpisodesService {
      * @param showId A themoviedb id.
      */
     @GET("/tv/{id}/season/{season_number}/episode/{episode_number}/external_ids")
-    ExternalIds externalIds(
+    Observable<ExternalIds> externalIds(
             @Path("id") int showId,
             @Path("season_number") int seasonNumber,
             @Path("episode_number") int episodeNumber
@@ -76,7 +77,7 @@ public interface TvEpisodesService {
      * @param showId A themoviedb id.
      */
     @GET("/tv/{id}/season/{season_number}/episode/{episode_number}/images")
-    Images images(
+    Observable<Images> images(
             @Path("id") int showId,
             @Path("season_number") int seasonNumber,
             @Path("episode_number") int episodeNumber
@@ -88,7 +89,7 @@ public interface TvEpisodesService {
      * @param showId A themoviedb id.
      */
     @GET("/tv/{id}/season/{season_number}/episode/{episode_number}/videos")
-    Videos videos(
+    Observable<Videos> videos(
             @Path("id") int showId,
             @Path("season_number") int seasonNumber,
             @Path("episode_number") int episodeNumber

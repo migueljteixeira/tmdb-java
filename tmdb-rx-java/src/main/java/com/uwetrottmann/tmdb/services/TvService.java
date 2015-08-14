@@ -13,6 +13,7 @@ import com.uwetrottmann.tmdb.entities.Videos;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface TvService {
     
@@ -24,7 +25,7 @@ public interface TvService {
      * @param appendToResponse <em>Optional.</em> extra requests to append to the result.
      */
     @GET("/tv/{id}")
-    TvShowComplete tv(
+    Observable<TvShowComplete> tv(
             @Path("id") int tmdbId,
             @Query("language") String language,
             @Query("append_to_response") AppendToResponse appendToResponse
@@ -36,7 +37,7 @@ public interface TvService {
      * @param tmdbId A themoviedb id.
      */
     @GET("/tv/{id}/alternative_titles")
-    TvAlternativeTitles alternativeTitles(
+    Observable<TvAlternativeTitles> alternativeTitles(
             @Path("id") int tmdbId
     );
 
@@ -48,7 +49,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/{id}/credits")
-    Credits credits(
+    Observable<Credits> credits(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -60,7 +61,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/{id}/external_ids")
-    ExternalIds externalIds(
+    Observable<ExternalIds> externalIds(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -72,7 +73,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/{id}/images")
-    Images images(
+    Observable<Images> images(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -83,7 +84,7 @@ public interface TvService {
      * @param tmdbId A themoviedb id.
      */
     @GET("/tv/{id}/keywords")
-    TvKeywords keywords(
+    Observable<TvKeywords> keywords(
             @Path("id") int tmdbId
     );
     
@@ -95,7 +96,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/{id}/similar")
-    TvResultsPage similar(
+    Observable<TvResultsPage> similar(
             @Path("id") int tmdbId,
             @Query("page") Integer page,
             @Query("language") String language
@@ -108,7 +109,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/{id}/videos")
-    Videos videos(
+    Observable<Videos> videos(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -118,7 +119,7 @@ public interface TvService {
      *
      */
     @GET("/tv/latest")
-    TvShowComplete latest();
+    Observable<TvShowComplete> latest();
     
     /**
      * Get the list of TV shows that are currently on the air.
@@ -128,7 +129,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/on_the_air")
-    TvResultsPage onTheAir(
+    Observable<TvResultsPage> onTheAir(
             @Query("page") Integer page,
             @Query("language") String language
     );
@@ -141,7 +142,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/airing_today")
-    TvResultsPage airingToday(
+    Observable<TvResultsPage> airingToday(
             @Query("page") Integer page,
             @Query("language") String language
     );
@@ -154,7 +155,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/top_rated")
-    TvResultsPage topRated(
+    Observable<TvResultsPage> topRated(
             @Query("page") Integer page,
             @Query("language") String language
     );
@@ -166,7 +167,7 @@ public interface TvService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/tv/popular")
-    TvResultsPage popular(
+    Observable<TvResultsPage> popular(
             @Query("page") Integer page,
             @Query("language") String language
     );

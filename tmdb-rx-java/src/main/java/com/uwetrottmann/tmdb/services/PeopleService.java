@@ -25,6 +25,7 @@ import com.uwetrottmann.tmdb.entities.PersonResultsPage;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 public interface PeopleService {
 
@@ -34,7 +35,7 @@ public interface PeopleService {
      * @param tmdbId TMDb id.
      */
     @GET("/person/{id}")
-    Person summary(
+    Observable<Person> summary(
             @Path("id") int tmdbId
     );
 
@@ -45,7 +46,7 @@ public interface PeopleService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/person/{id}/movie_credits")
-    PersonCredits movieCredits(
+    Observable<PersonCredits> movieCredits(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -57,7 +58,7 @@ public interface PeopleService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/person/{id}/tv_credits")
-    PersonCredits tvCredits(
+    Observable<PersonCredits> tvCredits(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -69,7 +70,7 @@ public interface PeopleService {
      * @param language <em>Optional.</em> ISO 639-1 code.
      */
     @GET("/person/{id}/combined_credits")
-    PersonCredits combinedCredits(
+    Observable<PersonCredits> combinedCredits(
             @Path("id") int tmdbId,
             @Query("language") String language
     );
@@ -78,7 +79,7 @@ public interface PeopleService {
      * Get the external ids for a specific person id.
      */
     @GET("/person/{id}/external_ids")
-    PersonIds externalIds(
+    Observable<PersonIds> externalIds(
             @Path("id") int tmdbId
     );
 
@@ -86,7 +87,7 @@ public interface PeopleService {
      * Get the images for a specific person id.
      */
     @GET("/person/{id}/images")
-    PersonImages images(
+    Observable<PersonImages> images(
             @Path("id") int tmdbId
     );
 
@@ -94,7 +95,7 @@ public interface PeopleService {
      * Get the list of popular people on The Movie Database. This list refreshes every day.
      */
     @GET("/person/popular")
-    PersonResultsPage popular(
+    Observable<PersonResultsPage> popular(
             @Query("page") Integer page
     );
 
@@ -102,6 +103,6 @@ public interface PeopleService {
      * Get the latest person id.
      */
     @GET("/person/latest")
-    Person latest();
+    Observable<Person> latest();
 
 }

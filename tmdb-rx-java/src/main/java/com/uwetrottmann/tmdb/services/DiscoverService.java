@@ -22,6 +22,7 @@ import com.uwetrottmann.tmdb.entities.TvResultsPage;
 import com.uwetrottmann.tmdb.enumerations.SortBy;
 import retrofit.http.GET;
 import retrofit.http.Query;
+import rx.Observable;
 
 import java.util.Date;
 
@@ -73,7 +74,7 @@ public interface DiscoverService {
      * added as a year. Expected value is an integer (year).
      */
     @GET("/discover/movie")
-    MovieResultsPage discoverMovie(
+    Observable<MovieResultsPage> discoverMovie(
             @Query("include_adult") boolean includeAdult,
             @Query("include_video") boolean includeVideo,
             @Query("language") String language,
@@ -120,7 +121,7 @@ public interface DiscoverService {
      * @param firstAirDateLte <em>Optional.</em> The maximum release to include. Expected format is YYYY-MM-DD.
      */
     @GET("/discover/tv")
-    TvResultsPage discoverTv(
+    Observable<TvResultsPage> discoverTv(
             @Query("page") Integer page,
             @Query("language") String language,
             @Query("sort_by") SortBy sortBy,

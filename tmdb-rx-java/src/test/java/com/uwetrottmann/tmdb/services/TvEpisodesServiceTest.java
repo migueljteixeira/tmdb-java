@@ -24,14 +24,18 @@ import com.uwetrottmann.tmdb.entities.Credits;
 import com.uwetrottmann.tmdb.entities.CrewMember;
 import com.uwetrottmann.tmdb.entities.ExternalIds;
 import com.uwetrottmann.tmdb.entities.Image;
-import com.uwetrottmann.tmdb.entities.TvEpisode;
 import com.uwetrottmann.tmdb.entities.Images;
+import com.uwetrottmann.tmdb.entities.TvEpisode;
 import com.uwetrottmann.tmdb.entities.Videos;
 import com.uwetrottmann.tmdb.entities.Videos.Video;
 import com.uwetrottmann.tmdb.enumerations.AppendToResponseItem;
+
 import org.junit.Test;
 
 import java.util.List;
+
+import rx.Observable;
+import rx.functions.Action1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,81 +43,117 @@ public class TvEpisodesServiceTest extends BaseTestCase {
 
     @Test
     public void test_episode() {
-        TvEpisode episode = getManager().tvEpisodesService().episode(TestData.TVSHOW_ID, 1, 1, null, null);
-        assertTvEpisode(episode);
+        Observable<TvEpisode> episode = getManager().tvEpisodesService().episode(TestData.TVSHOW_ID, 1, 1, null, null);
+
+        episode.toBlocking().forEach(new Action1<TvEpisode>() {
+            @Override
+            public void call(TvEpisode episode) {
+                assertTvEpisode(episode);
+            }
+        });
     }
 
     @Test
     public void test_episode_with_append_to_response() {
-        TvEpisode episode = getManager().tvEpisodesService().episode(TestData.TVSHOW_ID, 1, 1, null,
+        Observable<TvEpisode> episode = getManager().tvEpisodesService().episode(TestData.TVSHOW_ID, 1, 1, null,
                 new AppendToResponse(AppendToResponseItem.IMAGES, AppendToResponseItem.EXTERNAL_IDS, AppendToResponseItem.CREDITS));
-        assertTvEpisode(episode);
 
-        // credits
-        assertThat(episode.credits).isNotNull();
-        assertCrewCredits(episode.credits.crew);
-        assertCastCredits(episode.credits.guest_stars);
-        assertCastCredits(episode.credits.cast);
+        episode.toBlocking().forEach(new Action1<TvEpisode>() {
+            @Override
+            public void call(TvEpisode episode) {
+                assertTvEpisode(episode);
 
-        assertThat(episode.crew).isNotNull();
-        assertThat(episode.guest_stars).isNotNull();
-        assertCrewCredits(episode.crew);
-        assertCastCredits(episode.guest_stars);
+                // credits
+                assertThat(episode.credits).isNotNull();
+                assertCrewCredits(episode.credits.crew);
+                assertCastCredits(episode.credits.guest_stars);
+                assertCastCredits(episode.credits.cast);
 
-        // images
-        assertThat(episode.images).isNotNull();
-        assertImages(episode.images.stills);
+                assertThat(episode.crew).isNotNull();
+                assertThat(episode.guest_stars).isNotNull();
+                assertCrewCredits(episode.crew);
+                assertCastCredits(episode.guest_stars);
 
-        // external ids
-        assertThat(episode.external_ids.freebase_id).isNotNull();
-        assertThat(episode.external_ids.freebase_mid).isNotNull();
-        assertThat(episode.external_ids.tvdb_id).isNotNull();
-        assertThat(episode.external_ids.imdb_id).isNotNull();
-        assertThat(episode.external_ids.tvrage_id).isNotNull();
+                // images
+                assertThat(episode.images).isNotNull();
+                assertImages(episode.images.stills);
+
+                // external ids
+                assertThat(episode.external_ids.freebase_id).isNotNull();
+                assertThat(episode.external_ids.freebase_mid).isNotNull();
+                assertThat(episode.external_ids.tvdb_id).isNotNull();
+                assertThat(episode.external_ids.imdb_id).isNotNull();
+                assertThat(episode.external_ids.tvrage_id).isNotNull();
+            }
+        });
     }
 
     @Test
     public void test_credits() {
-        Credits credits = getManager().tvEpisodesService().credits(TestData.TVSHOW_ID, 1, 1);
-        assertThat(credits.id).isNotNull();
-        assertCrewCredits(credits.crew);
-        assertCastCredits(credits.cast);
-        assertCastCredits(credits.guest_stars);
+        Observable<Credits> credits = getManager().tvEpisodesService().credits(TestData.TVSHOW_ID, 1, 1);
+
+        credits.toBlocking().forEach(new Action1<Credits>() {
+            @Override
+            public void call(Credits credits) {
+                assertThat(credits.id).isNotNull();
+                assertCrewCredits(credits.crew);
+                assertCastCredits(credits.cast);
+                assertCastCredits(credits.guest_stars);
+            }
+        });
     }
 
     @Test
     public void test_externalIds() {
-        ExternalIds ids = getManager().tvEpisodesService().externalIds(TestData.TVSHOW_ID, 1, 1);
-        assertThat(ids.id).isNotNull();
-        assertThat(ids.freebase_id).isNotNull();
-        assertThat(ids.freebase_mid).isNotNull();
-        assertThat(ids.tvdb_id).isNotNull();
-        assertThat(ids.imdb_id).isNotNull();
-        assertThat(ids.tvrage_id).isNotNull();
+        Observable<ExternalIds> ids = getManager().tvEpisodesService().externalIds(TestData.TVSHOW_ID, 1, 1);
+
+        ids.toBlocking().forEach(new Action1<ExternalIds>() {
+            @Override
+            public void call(ExternalIds ids) {
+                assertThat(ids.id).isNotNull();
+                assertThat(ids.freebase_id).isNotNull();
+                assertThat(ids.freebase_mid).isNotNull();
+                assertThat(ids.tvdb_id).isNotNull();
+                assertThat(ids.imdb_id).isNotNull();
+                assertThat(ids.tvrage_id).isNotNull();
+            }
+        });
     }
 
     @Test
     public void test_images() {
-        Images images = getManager().tvEpisodesService().images(TestData.TVSHOW_ID, 1, 1);
-        assertThat(images.id).isNotNull();
-        assertImages(images.stills);
+        Observable<Images> images = getManager().tvEpisodesService().images(TestData.TVSHOW_ID, 1, 1);
+
+        images.toBlocking().forEach(new Action1<Images>() {
+            @Override
+            public void call(Images images) {
+                assertThat(images.id).isNotNull();
+                assertImages(images.stills);
+            }
+        });
     }
 
     @Test
     public void test_videos() {
-        Videos videos = getManager().tvEpisodesService().videos(TestData.TVSHOW_ID, 1, 1);
-        assertThat(videos.id).isNotNull();
+        Observable<Videos> videos = getManager().tvEpisodesService().videos(TestData.TVSHOW_ID, 1, 1);
 
-        for (Video video : videos.results) {
-            assertThat(video).isNotNull();
-            assertThat(video.id).isNotNull();
-            assertThat(video.iso_639_1).isNotNull();
-            assertThat(video.key).isNotNull();
-            assertThat(video.name).isNotNull();
-            assertThat(video.site).isNotNull();
-            assertThat(video.size).isNotNull();
-            assertThat(video.type).isNotNull();
-        }
+        videos.toBlocking().forEach(new Action1<Videos>() {
+            @Override
+            public void call(Videos videos) {
+                assertThat(videos.id).isNotNull();
+
+                for (Video video : videos.results) {
+                    assertThat(video).isNotNull();
+                    assertThat(video.id).isNotNull();
+                    assertThat(video.iso_639_1).isNotNull();
+                    assertThat(video.key).isNotNull();
+                    assertThat(video.name).isNotNull();
+                    assertThat(video.site).isNotNull();
+                    assertThat(video.size).isNotNull();
+                    assertThat(video.type).isNotNull();
+                }
+            }
+        });
     }
 
     private void assertTvEpisode(TvEpisode episode) {
@@ -154,7 +194,7 @@ public class TvEpisodesServiceTest extends BaseTestCase {
         }
     }
 
-    private void assertImages(List<Image> images){
+    private void assertImages(List<Image> images) {
         assertThat(images).isNotNull();
         assertThat(images).isNotEmpty();
 
