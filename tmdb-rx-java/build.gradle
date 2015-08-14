@@ -1,28 +1,20 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-}
-
 apply plugin: 'com.android.library'
 
+def artifact_id = "tmdb-rx-java"
+def group_id = "com.migueljteixeira"
+group = "com.migueljteixeira"
+version = "0.9.1"
+
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 9
         targetSdkVersion 22
+        versionCode 1
+        versionName "0.9.1"
     }
-
-    compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibility
-        targetCompatibility rootProject.ext.sourceCompatibility
-    }
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -31,4 +23,110 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.1'
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+def getRepositoryUsername() {
+    return hasProperty('SONATYPE_NEXUS_USERNAME') ? SONATYPE_NEXUS_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('SONATYPE_NEXUS_PASSWORD') ? SONATYPE_NEXUS_PASSWORD : ""
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                pom.groupId = group_id
+                pom.artifactId = artifact_id
+                pom.version = version
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+
+                pom.project {
+                    name "tmdb-rx-java"
+                    packaging "aar"
+                    description "tmdb-java is a Java library that provides access to the themoviedatabase API v3 using RxAndroid."
+                    url "https://github.com/migueljteixeira/tmdb-rx-java"
+
+                    scm {
+                        url "scm:git@github.com:migueljteixeira/tmdb-rx-java.git"
+                        connection "scm:git@github.com:migueljteixeira/tmdb-rx-java.git"
+                        developerConnection "scm:git@github.com:migueljteixeira/tmdb-rx-java.git"
+                    }
+
+                    licenses {
+                        license {
+                            name "The Apache Software License, Version 2.0"
+                            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                            distribution "repo"
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id "migueljteixeira"
+                            name "Miguel Teixeira"
+                        }
+
+                        developer {
+                            id "uwetrottmann"
+                            name "Uwe Trottmann"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    task installArchives(type: Upload) {
+        description "Installs the artifacts to the local Maven repository."
+        configuration = configurations['archives']
+        repositories {
+            mavenDeployer {
+                pom.groupId = group_id
+                pom.artifactId = artifact_id
+                pom.version = version
+
+                repository url: "file://${System.properties['user.home']}/.m2/repository"
+            }
+        }
+    }
+
+    signing {
+        required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
+        classpath += project.android.libraryVariants.toList().first().javaCompile.outputs.files
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+        classifier = 'javadoc'
+        from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = "sources"
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    artifacts {
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    }
 }

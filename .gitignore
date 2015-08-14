@@ -32,6 +32,7 @@ Thumbs.db
 
 # Gradle Files #
 ################
+gradle.properties
 .gradle
 .gradletasknamecache
 .m2

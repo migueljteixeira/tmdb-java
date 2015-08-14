@@ -7,11 +7,8 @@ buildscript {
     }
 }
 
-ext {
-    compileSdkVersion = 22
-    buildToolsVersion = '22.0.1'
-    minSdkVersion = 9
-    sourceCompatibility = JavaVersion.VERSION_1_7
+allprojects {
+    repositories {
+        mavenCentral()
+    }
 }
-
-apply plugin: 'android-reporting'
