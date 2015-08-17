@@ -62,7 +62,6 @@ tmdb.setApiKey("yourapikey");
 MovieService movieService = tmdb.movieService();
 //
 // Call any of the available endpoints
-
 movieService.summary(550)
     .subscribeOn(Schedulers.newThread())
     .observeOn(AndroidSchedulers.mainThread())
