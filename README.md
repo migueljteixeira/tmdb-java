@@ -25,31 +25,7 @@ or your Maven project:
 </dependency>
 ```
 
-Dependencies
-------------
-If you rather use the [released jar][3], add dependencies yourself as you see fit.
-For example for Gradle:
-
-```groovy
-compile 'com.squareup.retrofit:retrofit:1.9.0'
-compile 'com.squareup.okhttp:okhttp:2.3.0' // not mandatory, but greatly recommended
-```
-
-Or for Maven:
-
-```xml
-<dependency>
-    <groupId>com.squareup.retrofit</groupId>
-    <artifactId>retrofit</artifactId>
-    <version>1.9.0</version>
-</dependency>
-<!-- not mandatory, but greatly recommended: -->
-<dependency>
-  <groupId>com.squareup.okhttp</groupId>
-  <artifactId>okhttp</artifactId>
-  <version>2.3.0</version>
-</dependency>
-```
+Additional binaries and dependency information for can be found at [http://search.maven.org](http://search.maven.org/#search%7Cga%7C1%7Ctmdb-rx-java).
 
 Example
 -------
