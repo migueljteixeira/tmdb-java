@@ -14,6 +14,10 @@ Supported API calls
  * [TV Seasons](http://docs.themoviedb.apiary.io/#reference/tv-seasons) _incomplete_
  * [TV Episodes](http://docs.themoviedb.apiary.io/#reference/tv-episodes) _incomplete_
 
+0.9.1 *(2015-08-17)*
+--------------------
+ * Support RxAndroid.
+
 0.9.0 *(2015-05-11)*
 --------------------
  * Support Collections service. Thanks to @mlaggner!

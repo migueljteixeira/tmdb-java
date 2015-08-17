@@ -1,27 +1,27 @@
 **Pull requests (e.g. support for more API endpoints, bugfixes) against dev are welcome!**
 
-tmdb-java
+tmdb-rx-java
 ============
 
-A Java wrapper around the [TMDb v3 API][1] using [retrofit][2].
+A Java wrapper around the [TMDb v3 API][1] using [retrofit][2] with RxAndroid support.
 
 Usage
 -----
-![Maven Central version](https://img.shields.io/maven-central/v/com.uwetrottmann/tmdb-java.svg?style=flat-square)
+![Maven Central version](https://img.shields.io/maven-central/v/com.github.migueljteixeira/tmdb-rx-java.svg?style=flat-square)
 
 Add the following dependency to your Gradle project:
 
 ```groovy
-compile 'com.uwetrottmann:tmdb-java:0.9.0'
+compile 'com.github.migueljteixeira:tmdb-rx-java:0.9.1'
 ```
 
 or your Maven project:
 
 ```xml
 <dependency>
-    <groupId>com.uwetrottmann</groupId>
-    <artifactId>tmdb-java</artifactId>
-    <version>0.9.0</version>
+    <groupId>com.github.migueljteixeira</groupId>
+    <artifactId>tmdb-rx-java</artifactId>
+    <version>0.9.1</version>
 </dependency>
 ```
 
@@ -62,8 +62,11 @@ tmdb.setApiKey("yourapikey");
 MovieService movieService = tmdb.movieService();
 //
 // Call any of the available endpoints
-Movie movie = movieService.summary(550);
-Trailers trailers = movieService.trailers(550);
+
+movieService.summary(550)
+    .subscribeOn(Schedulers.newThread())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(/* an Observer */);
 ```
 
 See test cases in `src/test/` for more examples.
@@ -71,7 +74,7 @@ See test cases in `src/test/` for more examples.
 License
 -------
 
-    Copyright 2013-2015 Uwe Trottmann
+    Copyright 2015 Miguel Teixeira
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -90,4 +93,4 @@ License
 
  [1]: http://docs.themoviedb.apiary.io/
  [2]: https://github.com/square/retrofit
- [3]: https://github.com/UweTrottmann/tmdb-java/releases
+ [3]: https://github.com/migueljteixeira/tmdb-rx-java/releases
