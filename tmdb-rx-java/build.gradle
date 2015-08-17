@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 def artifact_id = "tmdb-rx-java"
-def group_id = "com.migueljteixeira"
-group = "com.migueljteixeira"
+def group_id = "com.github.migueljteixeira"
+group = "com.github.migueljteixeira"
 version = "0.9.1"
 
 android {
@@ -12,8 +12,6 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 1
-        versionName "0.9.1"
     }
 }
 
@@ -111,8 +109,6 @@ afterEvaluate { project ->
     task androidJavadocs(type: Javadoc) {
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
-        classpath += project.android.libraryVariants.toList().first().javaCompile.outputs.files
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
@@ -121,7 +117,7 @@ afterEvaluate { project ->
     }
 
     task androidSourcesJar(type: Jar) {
-        classifier = "sources"
+        classifier = 'sources'
         from android.sourceSets.main.java.srcDirs
     }
 
