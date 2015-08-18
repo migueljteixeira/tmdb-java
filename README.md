@@ -46,6 +46,11 @@ movieService.summary(550)
 
 See test cases in `src/test/` for more examples.
 
+Related projects
+----------------
+
+[tmdb-java](https://github.com/UweTrottmann/tmdb-java) - without RxAndroid support
+
 License
 -------
 
